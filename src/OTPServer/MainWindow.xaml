@@ -1,0 +1,162 @@
+﻿<Window x:Class="OTPServer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OTPServer"
+        mc:Ignorable="d"
+        Title="OTP" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid Margin="4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border BorderThickness="0 0 1 0" BorderBrush="Blue" Padding="0 0 4 0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- OTP request data -->
+                <StackPanel >
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Secret key:" Width="80"/>
+                        <TextBox Text="{Binding OTPRequest.SecretKey}" Grid.Column="1"/>
+
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Site Id:" Width="80"/>
+                        <TextBox Text="{Binding OTPRequest.SiteId}" Grid.Column="1"/>
+                    </Grid>
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <Grid Margin="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Step:" Width="80"/>
+                                <TextBox Text="{Binding OTPRequest.Step}" Grid.Column="1"/>
+                            </Grid>
+
+                            <Grid Margin="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Size:" Width="80"/>
+                                <TextBox Text="{Binding OTPRequest.Size}" Grid.Column="1" IsEnabled="False" VerticalAlignment="Top"/>
+                            </Grid>
+
+                        </StackPanel>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="Generete OTP" Padding="10,4,10,6" x:Name="GenerateOtp"
+                                    Grid.Row="1" Grid.Column="1"
+                                    Click="GenerateOtp_Click" Background="#FF007ACC" BorderBrush="#FF007ACC" Foreground="White" HorizontalAlignment="Right" Grid.RowSpan="2"
+                                />
+                        </Grid>
+
+                    </Grid>
+                </StackPanel>
+
+                <!-- OTP data -->
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- OTP code -->
+                    <Border BorderThickness="0 1 0 0" BorderBrush="Blue" Margin="4">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding OTP.Otp}" HorizontalAlignment="Center" Margin="2 6 6 2"
+                                       FontWeight="Bold" FontFamily="Tahoma" FontSize="30" Foreground="#FFFFCD43"/>
+                            <TextBlock Text="{Binding OTP.RemainingSeconds, StringFormat='({0})'}" HorizontalAlignment="Center" Margin="2 6 6 2" VerticalAlignment="Bottom"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Width="220" Height="220" Grid.Row="1" BorderThickness="0.5" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" >
+                        <ContentControl Content="{Binding QRCode}"
+                                        VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    </Border>
+
+                    <!-- QR Code -->
+                </Grid>
+            </Grid>
+
+        </Border>
+
+        <!-- Verifycation -->
+        <Grid Margin="6 2 6 6" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center">
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Your OTP:" Width="80"/>
+                        <TextBox Text="{Binding UserOtp}" Grid.Column="1"/>
+                    </Grid>
+
+                </StackPanel>
+                <Button Content="Verify OTP" Padding="10,4,10,6" x:Name="VerifyOtp"
+                        Grid.Column="1" Click="Verify_Click"
+                    Background="#FF007ACC" BorderBrush="#FF007ACC"
+                    Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+            </Grid>
+            <Grid Margin="20">
+                <Border
+                    Background="White" Visibility="{Binding IsValid, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" Margin="0">
+                    <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center"
+                             Height="200" Width="200">
+                        <Canvas Height="180" Width="180" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Path Data="M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z"
+                            Fill="Green" Stretch="Fill" Height="180" Width="141.428" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="17.786"/>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

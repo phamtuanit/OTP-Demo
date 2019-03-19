@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OTPServer"
         mc:Ignorable="d"
-        Title="OTP" Height="450" Width="800">
+        Title="OTP" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
@@ -151,7 +151,7 @@
                              Height="200" Width="200">
                         <Canvas Height="180" Width="180" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Path Data="M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z"
-                            Fill="Green" Stretch="Fill" Height="180" Width="141.428" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="17.786"/>
+                            Fill="#FFFFE300" Stretch="Fill" Height="180" Width="141.428" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="17.786"/>
                         </Canvas>
                     </Viewbox>
                 </Border>
